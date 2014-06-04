@@ -1,0 +1,144 @@
+* {
+    box-sizing: border-box;
+}
+html {
+    height: 100%;
+    background: #333333;
+}
+body {
+    font-family: Lato, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    color: #333;
+    background: #070c0f;
+
+    min-width: 380px;
+}
+
+canvas { display: none; position: absolute; top: 0; }
+svg { margin: 0 auto; }
+
+#source { position: relative; height: 140px; margin: 5px 0; }
+#source img { max-height: 140px; }
+#source img,
+#output svg {
+    max-width: 100%;
+    position: absolute !important;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+#output { width: 100%; height: 99%; position: relative;}
+#loading { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); color: white; }
+#loading > div { margin: 200px auto 0; display: block; width: 100%; text-align: center; }
+
+#present { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); }
+webview { margin: 0; }
+#viewInstructions {
+    width: 100%;
+    height: 10%;
+    color: white;
+    margin: 0;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Navigation bar */
+#nav {
+    float: left;
+    width: 200px;
+    color: #eee;
+    margin: 0;
+    padding: 5px;
+    overflow: auto;
+}
+.ui-accordion .ui-accordion-content {
+    padding: 5px 10px;
+}
+/* Ensure background on entire bar */
+#nav > *, #nav .button {
+    display: block;
+    float: left;
+    width: 100%;
+    margin: 1px 0 0;
+}
+#nav h4 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+}
+#nav > .row {
+    padding: 0;
+}
+#nav > .input {
+    padding: 5px;
+}
+#nav .max { width: 100%; }
+
+#nav input[type=text] {
+    border: none;
+    padding: 4px 8px;
+    border-radius: 2px;
+}
+#nav input[type=checkbox] {
+    vertical-align: -20%;
+}
+#nav input.sm {
+    text-align: center;
+    width: 60px;
+    border-radius: 2px;
+}
+#nav label {
+    display: inline-block;
+    font-size: 10px;
+}
+#nav #fontPreview {
+    text-align: center;
+    color: #333;
+    background: #ccc;
+    padding: 8px 2px;
+    margin-bottom: 5px;
+    border-radius: 2px;
+}
+
+/* Responsive features of navigation bar */
+@media (max-width: 1060px) {
+    .hide-md { display: none; }
+}
+@media (max-width: 600px) {
+    .hide-sm { display: none; }
+}
+
+/* Utils */
+.pull-right {
+    float: right !important;
+}
+.disabled {
+    pointer-events: none;
+    cursor: default;
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+.well {
+    background: #182732;
+    padding: 4px;
+    border-radius: 2px;
+}
+.help {
+    display: block;
+    font-size: 10px;
+    color: #999;
+    margin: 2px 0 7px 0;
+    line-height: 1;
+}
+
+/* Editor areas */
+#editor {
+    height: 100%;
+    margin-left: 200px;
+    background: black;
+    color: white;
+}
+
+#dummylink { display: none; }

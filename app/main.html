@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>Image to SVG Text Converter</title>
+
+        <script type="text/javascript" src="lib/jquery-1.11.0.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="lib/jquery-ui-1.10.4.custom.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="lib/svg.min.js" charset="utf-8"></script>
+        <script type="text/javascript" src="main.js" charset="utf-8"></script>
+
+        <link rel="stylesheet" href="css/jquery-ui-1.10.4.custom.min.css" />
+        <link href='icons.css' rel='stylesheet' type='text/css'>
+        <link href='main.css' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <div id="nav">
+            <a href="#" id="load" accesskey="o" title="(Alt + Shift + O)" class="button"><i class="icon icon-image"></i> <span>Load image</span></a>
+            <div id="source" class="row"><img id="sourceImg"></div>
+            <a href="#" id="generate" accesskey="g" title="(Alt + Shift + G)" class="button"><i class="icon icon-lightning"></i> <span>Generate</span></a>
+            <div class="well">Output: <span id="outputDimension">0 &times; 0</span>px</div>
+            <div id="accordion">
+                <h3>Visuals</h3>
+                <div class="group">
+                    <div class="row input">
+                        <h4>Samples (cols &times; rows)</h4>
+                        <input type="text" value="16" id="xSamples" size="1" maxlength="3" class="sm"> &times;
+                        <input type="text" value="12" id="ySamples" size="1" maxlength="3" class="sm">
+                        <small class="help">Too many samples can be slow to generate</small>
+                    </div>
+                    <div class="row input">
+                        <h4>Background</h4> <input type="text" value="#000000" id="bg" size="12">
+                        <small class="help">Name or HEX. Some SVG editors prefer HEX colors</small>
+                    </div>
+                    <div class="row input">
+                        <h4>Image width</h4> <input type="text" value="auto" id="outputWidth" size="12">
+                        <small class="help">Set to a pixel value to override the image output width. Height is determined by sample ratio and adjustments.</small>
+                    </div>
+                </div>
+                <h3>Adjustments</h3>
+                <div class="group">
+                    <div class="row input">
+                        <h4>Character scale</h4>
+                        <input type="text" value="1.5" id="fontScale" size="1" maxlength="8" class="sm">
+                    </div>
+                    <div class="row input">
+                        <h4>Character size offset</h4>
+                        <input type="text" value="0" id="fontSizeShift" size="1" maxlength="8" class="sm"> (relative, signed)
+                    </div>
+                    <div class="row input">
+                        <h4>Spacing scale</h4>
+                        <input type="text" value="1" id="xScale" size="1" maxlength="8" class="sm"> &times;
+                        <input type="text" value="1" id="yScale" size="1" maxlength="8" class="sm">
+                    </div>
+                </div>
+                <h3>Font</h3>
+                <div class="group">
+                    <div class="row input">
+                        <h4>Font family</h4> <input type="text" value="Arial Black" id="font" size="24" class="max">
+                        <label for="bold"><input type="checkbox" id="bold"> Bold</label>
+                        <div id="fontPreview">Font Preview</div>
+                    </div>
+                    <div class="row input">
+                        <h4>Font effect</h4>
+                        <label for="lumFontSize"><input type="checkbox" id="lumFontSize" checked> Luminousity -> font size</label>
+                        <label for="lumFontSizeInvert"><input type="checkbox" id="lumFontSizeInvert"> Inverted</label>
+                    </div>
+                </div>
+                <h3>Data input</h3>
+                <div class="group">
+                    <div class="row input">
+                        <h4>Letters</h4>
+                        <input type="text" value="ABCDEFGHKMNOPQRSUVWXYZ" id="letters" size="24" class="max">
+                        <h4>Order</h4>
+                        <label for="letterOrderRandom">
+                            <input type="radio" id="letterOrderRandom" name="letterOrder" value="0" checked>Random</label><br>
+                        <label for="letterOrderSequential">
+                            <input type="radio" id="letterOrderSequential" name="letterOrder" value="1">Sequential</label>
+                        </select>
+                    </div>
+                </div>
+                <h3>Export</h3>
+                <div class="group">
+                    <div class="row input">
+                        <label for="inkscapeFix"><input type="checkbox" id="inkscapeFix" checked> Inkscape fix</label><br>
+                        <small class="help">Alternate location of characters for some SVG programs like Inkscape. Try toggling this if characters are misplaced in exported SVG.<br>When <i>on</i>, export to SVG triggers a Generate</small>
+                    </div>
+                    <div class="row input">
+                        <label for="opaque"><input type="checkbox" id="opaque" checked> Opaque background</label>
+                        <small class="help">When <i>off</i>, export triggers a Generate</small>
+                    </div>
+                    <a href="#" id="save" accesskey="s" title="(Alt + Shift + S)" class="button"><i class="icon icon-disk"></i> <span>Export SVG</span></a>
+                    <a href="#" id="savePng" accesskey="e" title="(Alt + Shift + E)" class="button"><i class="icon icon-image"></i> <span>Export PNG</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="editor">
+            <div id="output"></div>
+        </div>
+
+        <div id="loading">
+            <div>
+                <h3>Please wait...</h3>
+                <a href="#" class="button" id="cancelRender">Abort</a>
+            </div>
+        </div>
+
+        <div id="present">
+            <div id="viewInstructions">
+                <a class="button pull-right" href="#" id="closePresent">Close</a>
+                Right click on image and select "Save as..." to save as PNG.<br>
+                Image may be scaled, but will be saved in full resolution.
+            </div>
+            <webview id="view" style="width:100%; height:90%"></webview>
+        </div>
+        <canvas id="canvas"></canvas>
+
+        <!-- Used to download files that normally would open in the browser -->
+        <a id="dummylink" href="about:blank"></a>
+    </body>
+</html>
